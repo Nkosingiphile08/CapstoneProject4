@@ -28,7 +28,7 @@ document.addEventListener('alpine:init', () => {
             aconsumption: 0, // Alcohol consumption
             salt: 0,
             stressLevel: 0,
-            health: 0, // Chronic kidney diseas
+            health: 0, // Chronic kidney disease
         },
         prediction: null,
 

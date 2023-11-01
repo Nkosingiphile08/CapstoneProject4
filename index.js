@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import { open } from 'sqlite';
-import { getUsers, addUser, deleteUser, getChatrooms, addChatroom, updateChatroom, deleteChatroom, getChatroomMembers, addChatroomMember, deleteChatroomMember, getPosts, addPost, updatePost, deletePost, addTracking, updateTracking, deleteTracking, getTracking } from './db.js';
+import sqlite3 from 'sqlite3';
+import expressSession from 'express-session';
+import { getUsers, addUser, deleteUser, login, getChatrooms, addChatroom, updateChatroom, deleteChatroom, getChatroomMembers, addChatroomMember, deleteChatroomMember, getPosts, addPost, updatePost, deletePost, addTracking, updateTracking, deleteTracking, getTracking } from './db.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -18,7 +20,11 @@ app.use(cors());
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-
+app.use(expressSession({
+  secret: 'hypertension-screening-tool-123',
+  resave: false,
+  saveUninitialized: true
+}));
 //appointment
 app.get('/api/user-data', (req, res) => {
   const userData = {
@@ -60,6 +66,35 @@ app.post('/api/addUser', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// user login
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await login(email, password);
+
+    if (user) {
+      req.session.userId = user.id;
+      res.json({ message: 'Login successful' });
+    } else {
+      res.status(401).json({ message: 'Invalid credentials' });
+    }
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// user authentication
+function requireAuth(req, res, next) {
+  if (req.session.userId) {
+    next(); // User is authenticated, proceed to the next middleware
+  } else {
+    res.redirect('/api/login'); // User is not authenticated, redirect to the login page
+  }
+}
+
 
 // Delete a user
 app.post('/api/deleteUser', async (req, res) => {
@@ -105,7 +140,8 @@ app.post('/api/addChatroom', async (req, res) => {
 
 //update chatroom
 app.post('/api/updateChatroom/', async (req, res) => {
-  const { name, id } = req.body;
+  const { name } = req.body;
+  const id = req.session.userId;
 
   try {
     await updateChatroom( name, id); 
@@ -133,6 +169,7 @@ app.post('/api/deleteChatroom', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
       }
   });
+
 
   // Get chatroom members
 app.get('/api/chatroomMembers', async (req, res) => {
@@ -177,7 +214,7 @@ app.post('/api/deleteChatroomMember/', async (req, res) => {
 
 
 // Get posts
-app.get('/api/posts', async (req, res) => {
+app.get('/api/chatrooms/:chatroomId/posts', async (req, res) => {
   try {
     const posts = await getPosts();
     res.json({ posts });
@@ -203,8 +240,9 @@ app.post('/api/addPost', async (req, res) => {
 });
 
 //update a post
-app.post('/api/updatePost/', async (req, res) => {
-  const { post_info, id } = req.body;
+app.post('/api/updatePost/:id', async (req, res) => {
+  const { post_info } = req.body;
+  const id = req.params.id;
   
   try {
     await updatePost( post_info, id); 
@@ -219,8 +257,8 @@ app.post('/api/updatePost/', async (req, res) => {
 });
 
 // Delete a post
-app.post('/api/deletePost', async (req, res) => {
-  const {id} = req.body;
+app.post('/api/deletePost/:id', async (req, res) => {
+  const {id} = req.params.id;
   try {
       await deletePost(id);
       res.json({
@@ -232,7 +270,6 @@ app.post('/api/deletePost', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
       }
   });
-
 
 // Define a route to handle GET requests for tracking data
 app.get('/api/tracking', async (req, res) => {

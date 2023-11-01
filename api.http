@@ -169,7 +169,7 @@ Content-Type: application/json
 {
     
     "input_1": 4,
-    "input_2": 23,
+    "input_2": 23,   
     "input_3": 33,
     "input_4": 18,
     "input_5": 7,

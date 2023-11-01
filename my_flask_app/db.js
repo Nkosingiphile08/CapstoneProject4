@@ -70,7 +70,6 @@ export async function deleteChatroomMember(chatroom_id, user_id) {
     await db.run(sql, [chatroom_id, user_id]);
 }
 
-
 // posts
 
 export async function getPosts() {

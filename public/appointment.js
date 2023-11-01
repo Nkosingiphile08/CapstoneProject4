@@ -1,6 +1,6 @@
 function profileData() {
         return {
-            user: null, // Initialize user data as null
+            user: null, 
 
             // Function to fetch user data
             fetchUserData() {

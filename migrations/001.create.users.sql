@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users (name, email, password, status)
 VALUES ('John Doe', 'johndoe@example.com', 'password567', 'offline');
 
-UPDATE users
-SET email = 'jane1@example.com'
-WHERE username = 'jane_tae';
+-- UPDATE users
+-- SET email = 'jane1@example.com'
+-- WHERE username = 'jane_tae';
                
 SELECT * FROM users;
 

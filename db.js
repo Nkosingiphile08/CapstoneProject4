@@ -10,7 +10,7 @@ await db.migrate()
 
 console.log('start')
   
-// users
+// / users
 
 export async function getUsers() {
     const result = await db.all('select * from users')
@@ -27,6 +27,13 @@ export async function deleteUser(id) {
     const sql = 'delete from users where id = ?';
     await db.run(sql, [id]);
 }
+
+// Login function
+export async function login(email, password) {
+    const sql = 'select * from users where email = ? and password = ?'
+    const user = await db.run(sql, [email, password]);
+    return user;
+  }
 
 // chatrooms
 
@@ -50,7 +57,6 @@ export async function updateChatroom(name, id) {
     await db.run(sql, [name, id]);
 }
 
-
 // chatrooms_members
 
 export async function getChatroomMembers() {
@@ -68,7 +74,6 @@ export async function deleteChatroomMember(chatroom_id, user_id) {
     const sql = 'delete from chatroom_members where chatroom_id = ? and user_id = ?';
     await db.run(sql, [chatroom_id, user_id]);
 }
-
 
 // posts
 
