@@ -182,3 +182,4 @@ Content-Type: application/json
 
 ### GET Input Data from Flask API
 GET http://127.0.0.1:5000/api/inputs
+
