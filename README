@@ -1,0 +1,37 @@
+hypertension risk prediction and management application this application is designed to predict hypertension risk using various inputs or lifestyle characteristics.
+Genetic Pedigree Coefficient: Information related to the genetic history of hypertension in a person's family.
+Age: The age of the individual, as age can be a significant factor in hypertension risk.
+Sex: Gender is considered as it can influence hypertension risk.
+Body Mass Index (BMI): This measures the relationship between a person's height and weight and is an essential health indicator.
+Smoking Habits: Whether an individual is a smoker or not, as smoking can contribute to hypertension.
+Physical Activity: Information on an individual's level of physical activity or exercise routines.
+Salt Consumption: Dietary salt intake, which can be a risk factor for hypertension.
+Alcohol Intake: Whether an individual consumes alcoholic beverages and the frequency.
+Stress Levels: An individual's stress levels and coping mechanisms.
+Presence of Chronic Kidney Disease: Whether the individual has a history of chronic kidney disease, which can increase hypertension risk.
+These inputs and characteristics are used by the app's machine learning models to provide predictions and insights related to hypertension risk.
+
+Before running the app, ensure you have the following software installed:
+Python 3.x
+Node.js packages (npm install)
+Getting Started
+Setting up the Flask App:
+.\venv\Scripts\activate  # On Windows
+install flask
+install cors
+use python app.py to run the flask app in the terminal 
+Run the Flask app (it will run on port 5000 by default)
+
+Running the Prediction:
+The frontend interacts with the Flask backend to provide hypertension risk predictions. To use the prediction feature, please ensure that the Flask app is running in your terminal.
+
+Accessing other pages:
+The web app may use different port numbers for various parts of the application. Here are the ports to access different resources:
+
+Flask App: Running on port 5000
+Frontend: Running on port 3000, this port is specifically used for the "Community Support" screen and chat interface.
+Additional Services: May use other ports such as 5501
+
+
+
+
